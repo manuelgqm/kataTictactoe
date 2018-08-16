@@ -1,17 +1,34 @@
 "use strict"
 
-import expect from 'expect.js';
+import chai from 'chai';
+import spies from 'chai-spies';
+const expect = chai.expect;
 
-describe("Kata", () => {
-  const Kata = require('../lib/Kata.js')
-  var kata
+chai.use(spies);
+
+describe("A Tic Tac Toe Game", () => {
+  const Game = require('../lib/Game.js')
+  let game
 
   beforeEach(() => {
-    kata = new Kata()
+    let board = {};
+    game = new Game(board);
   })
 
-  it("dummy test", () => {
-    expect(kata.is_initialized()).to.be.ok();
+  it("has a board", () =>{
+    expect(game.board).to.be.ok;
+  });
+
+  it("Ends when one player wins", () => {
+    chai.spy.on(game, "checkWinner", () => true);
+    expect(game.checkWinner()).to.be.ok;
+  })
+
+  it("Ends when there is no room on the board", () =>{
+    let board = {};
+    chai.spy.on(board, "room", () => false);
+    game.board = board;
+    expect(game.board.room()).to.not.be.ok;
   })
 
 })
