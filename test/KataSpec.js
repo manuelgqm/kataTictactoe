@@ -15,16 +15,16 @@ describe("A Tic Tac Toe Game", () => {
     game = new Game(board);
   });
 
-  it("has a board", () =>{
+  it("should have a board", () =>{
     expect(game.board).to.be.ok;
   });
 
-  it("Ends when one player wins", () => {
+  it("should end when one player wins", () => {
     chai.spy.on(game, "checkWinner", () => true);
     expect(game.checkWinner()).to.be.ok;
   });
 
-  it("Ends when there is no room on the board", () =>{
+  it("should end when there is no room on the board", () =>{
     let board = {};
     chai.spy.on(board, "room", () => false);
     game.board = board;
@@ -41,13 +41,37 @@ describe('A board', () => {
     board = new Board();
   })
 
-  it('starts empty', () => {
+  it('should start empty', () => {
     expect(board.itemsCount()).to.be.eq(0);
   });
 
-  it('adds items', () => {
-    let item = {};
+  it('should add one item', () => {
+    let item = [];
     board.addItem(item);
-    expect(board.itemsCount()).to.be.eq(1);
-  })
+    expect(board.containsItem(item)).to.be.ok;
+  });
+
+  it('should add two items', () => {
+    let item1 = [];
+    let item2 = [];
+
+    board.addItem(item1);
+    board.addItem(item2);
+
+    expect(board.containsItem(item1)).to.be.ok;
+    expect(board.containsItem(item2)).to.be.ok;
+  });
+
+  it("should throw a error if try to add more than 9 items", () => {
+    let items = new Array(9).fill([]);
+    let not_filling_item = [0,0];
+
+    board.items = items;
+    expect(board.addItem.bind(board, not_filling_item)).to.throw("Can't add item; not enought room in board");
+  });
+
+});
+
+describe('A Item', () => {
+
 })
