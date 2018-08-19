@@ -31,10 +31,10 @@ describe("A Game", () => {
   });
 
   it('should win if three in a row', () => {
-    let win_input_1 = "11;12;21;13"
-    let win_input_2 = "21;22;;31;32;23"
-    let win_input_3 = "31;32;33"
-    let input2 = "11;12;23"
+    let win_input_1 = ["11", "12", "21", "13"]
+    let win_input_2 = ["21", "22", "31", "32", "23"]
+    let win_input_3 = ["31", "32", "33"]
+    let input2 = ["11", "12", "23"]
 
     expect(game.checkWinner(win_input_1)).to.be.ok;
     expect(game.checkWinner(win_input_2)).to.be.ok;
@@ -43,10 +43,10 @@ describe("A Game", () => {
   });
 
   it('should return a winner if three in a colummn', () => {
-    let win_input_1 = "11;21;31;13"
-    let win_input_2 = "21;12;;32;22;23"
-    let win_input_3 = "13;23;33"
-    let input2 = "11;12;23"
+    let win_input_1 = ["11", "21", "31", "13"]
+    let win_input_2 = ["21", "12", "32", "22", "23"]
+    let win_input_3 = ["13", "23", "33"]
+    let input2 = ["11", "12", "23"]
 
     expect(game.checkWinner(win_input_1)).to.be.ok;
     expect(game.checkWinner(win_input_2)).to.be.ok;
@@ -55,8 +55,8 @@ describe("A Game", () => {
   });
 
   it('should return a winner when three in a diagonal', () => {
-    let win_input_1 = "11;22;33;13"
-    let win_input_2 = "13;22;;31;22;23"
+    let win_input_1 = ["11", "22", "33", "13"]
+    let win_input_2 = ["13", "22", "31", "22", "23"]
 
     expect(game.checkWinner(win_input_1)).to.be.ok;
     expect(game.checkWinner(win_input_2)).to.be.ok;
