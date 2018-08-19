@@ -11,8 +11,8 @@ describe("A Game", () => {
   let game
 
   beforeEach(() => {
-    let playerX = { items: new Array(4).fill("")};
-    let playerO = { items: new Array(4).fill("")};
+    let playerX = {};
+    let playerO = {};
     game = new Game(playerX, playerO);
   });
 
@@ -30,37 +30,81 @@ describe("A Game", () => {
     expect(game.hasSpace()).to.not.be.ok;
   });
 
-  it('should win if three in a row', () => {
-    let win_input_1 = ["11", "12", "21", "13"]
-    let win_input_2 = ["21", "22", "31", "32", "23"]
-    let win_input_3 = ["31", "32", "33"]
-    let input2 = ["11", "12", "23"]
+  context("that applies for a rules", () => {
 
-    expect(game.checkWinner(win_input_1)).to.be.ok;
-    expect(game.checkWinner(win_input_2)).to.be.ok;
-    expect(game.checkWinner(win_input_3)).to.be.ok;
-    expect(game.checkWinner(input2)).to.not.be.ok;
+    it('should check for three in a row', () => {
+      let win_input_1 = ["11", "12", "21", "13"]
+      let win_input_2 = ["21", "22", "31", "32", "23"]
+      let win_input_3 = ["31", "32", "33"]
+      let input2 = ["11", "12", "23"]
+
+      expect(game.checkWinner(win_input_1)).to.be.ok;
+      expect(game.checkWinner(win_input_2)).to.be.ok;
+      expect(game.checkWinner(win_input_3)).to.be.ok;
+      expect(game.checkWinner(input2)).to.not.be.ok;
+    });
+
+    it('should check for three in a colummn', () => {
+      let win_input_1 = ["11", "21", "31", "13"]
+      let win_input_2 = ["21", "12", "32", "22", "23"]
+      let win_input_3 = ["13", "23", "33"]
+      let input2 = ["11", "12", "23"]
+
+      expect(game.checkWinner(win_input_1)).to.be.ok;
+      expect(game.checkWinner(win_input_2)).to.be.ok;
+      expect(game.checkWinner(win_input_3)).to.be.ok;
+      expect(game.checkWinner(input2)).to.not.be.ok;
+    });
+
+    it('should check for three in a diagonal', () => {
+      let win_input_1 = ["11", "22", "33", "13"]
+      let win_input_2 = ["13", "22", "31", "22", "23"]
+
+      expect(game.checkWinner(win_input_1)).to.be.ok;
+      expect(game.checkWinner(win_input_2)).to.be.ok;
+    })
   });
 
-  it('should return a winner if three in a colummn', () => {
-    let win_input_1 = ["11", "21", "31", "13"]
-    let win_input_2 = ["21", "12", "32", "22", "23"]
-    let win_input_3 = ["13", "23", "33"]
-    let input2 = ["11", "12", "23"]
+  context('that resolves', () => {
+    const Player = require('../lib/Player.js')
+    let game, playerX, playerO;
 
-    expect(game.checkWinner(win_input_1)).to.be.ok;
-    expect(game.checkWinner(win_input_2)).to.be.ok;
-    expect(game.checkWinner(win_input_3)).to.be.ok;
-    expect(game.checkWinner(input2)).to.not.be.ok;
+    beforeEach(() => {
+      playerX = new Player();
+      playerO = new Player();
+      game = new Game(playerX, playerO);
+    });
+
+    it("could end with player X as winner", () => {
+      let winnig_setup = ["11", "22", "33"];
+      let not_winning_setup = ["12", "23"];
+
+      game.playerX.items = winnig_setup
+      game.playerO.items = not_winning_setup;
+
+      expect(game.resolve()).to.eq("Game over. Result: player X wins the game!!");
+    });
+
+    it("could end with player O as winner", () => {
+      let winnig_setup = ["11", "22", "33"];
+      let not_winning_setup = ["12", "23"];
+
+      game.playerX.items = not_winning_setup;
+      game.playerO.items = winnig_setup;
+
+      expect(game.resolve()).to.eq("Game over. Result: player O wins the game!!");
+    });
+
+    it("could end with Draw", () => {
+      let not_winning_setup1 = ["11", "13", "21", "32", "33"];
+      let not_winning_setup2 = ["12", "22", "23", "31"];
+
+      game.playerX.items = not_winning_setup1;
+      game.playerO.items = not_winning_setup2;
+
+      expect(game.resolve()).to.eq("Game ends in draw. Try again!");
+    });
   });
-
-  it('should return a winner when three in a diagonal', () => {
-    let win_input_1 = ["11", "22", "33", "13"]
-    let win_input_2 = ["13", "22", "31", "22", "23"]
-
-    expect(game.checkWinner(win_input_1)).to.be.ok;
-    expect(game.checkWinner(win_input_2)).to.be.ok;
-  })
 
 })
 
@@ -95,19 +139,20 @@ describe('A player', () => {
 
 });
 
-describe('A player', () => {
-
-})
-
-describe('A Tic Tac Toe Game', () => {
-  const Game = require('../lib/Game.js')
+context('Acceptance Tic Tac Toe Game test', () => {
+  const Game = require("../lib/Game");
   const Player = require("../lib/Player");
+  let playerX,
+  playerO,
+  game;
 
-  it("should end with player X as winner", () => {
-    let playerX = new Player();
-    let playerO = new Player();
-    let game = new Game(playerX, playerO);
+  beforeEach(() => {
+    playerX = new Player();
+    playerO = new Player();
+    game = new Game(playerX, playerO);
+  });
 
+  it("could end with player X as winner", () => {
     game.playerX.addItem("11");
     game.playerO.addItem("12");
     game.playerX.addItem("22");
@@ -117,11 +162,7 @@ describe('A Tic Tac Toe Game', () => {
     expect(game.resolve()).to.eq("Game over. Result: player X wins the game!!");
   });
 
-  it("should end with player O as winner", () => {
-    let playerX = new Player();
-    let playerO = new Player();
-    let game = new Game(playerX, playerO);
-
+  it("could end with player O as winner", () => {
     game.playerX.addItem("11");
     game.playerO.addItem("31");
     game.playerX.addItem("22");
@@ -132,11 +173,7 @@ describe('A Tic Tac Toe Game', () => {
     expect(game.resolve()).to.eq("Game over. Result: player O wins the game!!");
   });
 
-  it("should end with Draw", () => {
-    let playerX = new Player();
-    let playerO = new Player();
-    let game = new Game(playerX, playerO);
-
+  it("could end with Draw", () => {
     game.playerX.addItem("11");
     game.playerO.addItem("12");
     game.playerX.addItem("13");
