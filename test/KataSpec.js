@@ -11,13 +11,10 @@ describe("A Game", () => {
   let game
 
   beforeEach(() => {
-    let playerX = {};
-    let playerO = {};
-    game = new Game(playerX, playerO);
+    game = new Game();
   });
 
   it("should have cross and circle players", () =>{
-    expect(game.playerX).to.be.ok;
     expect(game.playerO).to.be.ok;
   });
 
