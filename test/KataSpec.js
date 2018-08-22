@@ -15,16 +15,8 @@ describe("A Game", () => {
   });
 
   it("should have cross and circle players", () =>{
+    expect(game.playerX).to.be.ok;
     expect(game.playerO).to.be.ok;
-  });
-
-  it("should end when one player wins", () => {
-    chai.spy.on(game, "checkWinner", () => true);
-    expect(game.checkWinner()).to.be.ok;
-  });
-
-  it("should end when there is no space left", () =>{
-    expect(game.hasSpace()).to.not.be.ok;
   });
 
   context("that applies for a rules", () => {
